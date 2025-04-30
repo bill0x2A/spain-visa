@@ -1,5 +1,6 @@
-import React from "react";
-import { FaCheckCircle, FaTrash } from "react-icons/fa";
+// Updated TaskList.jsx with clear completion indicators
+import React from 'react';
+import { FaCheckCircle, FaTrash } from 'react-icons/fa';
 
 const TaskList = ({ tasks, toggleTaskCompletion, deleteTask }) => {
   // Group tasks by category
@@ -28,33 +29,31 @@ const TaskList = ({ tasks, toggleTaskCompletion, deleteTask }) => {
             {categoryTasks.map((task) => (
               <div
                 key={task.id}
-                className={`task-card ${
-                  task.completed ? "task-completed" : ""
-                }`}
+                className={`task-card ${task.completed ? 'task-completed border-l-4 border-green-500' : ''}`}
               >
                 <div className="flex justify-between">
-                  <span
-                    className={`text-xs font-medium px-2.5 py-0.5 rounded-full category-${task.category
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}`}
-                  >
-                    {task.category}
-                  </span>
+                  <div className="flex items-center">
+                    <span 
+                      className={`text-xs font-medium px-2.5 py-0.5 rounded-full category-${task.category.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      {task.category}
+                    </span>
+                    
+                    {/* Show completion badge for completed tasks */}
+                    {task.completed && (
+                      <span className="ml-2 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        Completed
+                      </span>
+                    )}
+                  </div>
+                  
                   <div className="flex space-x-2">
                     <button
-                      onClick={() =>
-                        toggleTaskCompletion(task.id, task.completed)
-                      }
+                      onClick={() => toggleTaskCompletion(task.id, task.completed)}
                       className={`text-lg ${
-                        task.completed
-                          ? "text-green-500"
-                          : "text-gray-300 hover:text-green-500"
+                        task.completed ? 'text-green-500' : 'text-gray-300 hover:text-green-500'
                       }`}
-                      aria-label={
-                        task.completed
-                          ? "Mark as incomplete"
-                          : "Mark as complete"
-                      }
+                      aria-label={task.completed ? "Mark as incomplete" : "Mark as complete"}
                     >
                       <FaCheckCircle />
                     </button>
@@ -67,11 +66,13 @@ const TaskList = ({ tasks, toggleTaskCompletion, deleteTask }) => {
                     </button>
                   </div>
                 </div>
-
-                <h3 className="font-medium text-lg mt-2">{task.title}</h3>
-
+                
+                <h3 className={`font-medium text-lg mt-2 ${task.completed ? 'line-through text-gray-500' : ''}`}>
+                  {task.title}
+                </h3>
+                
                 {task.description && (
-                  <p className="text-gray-600 text-sm mt-2">
+                  <p className={`text-gray-600 text-sm mt-2 ${task.completed ? 'text-gray-400' : ''}`}>
                     {task.description}
                   </p>
                 )}

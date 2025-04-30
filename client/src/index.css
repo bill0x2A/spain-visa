@@ -1,9 +1,10 @@
+/* client/src/index.css - Updated with better task completion styles */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .task-card {
@@ -11,7 +12,7 @@ body {
 }
 
 .task-completed {
-  @apply opacity-60;
+  @apply bg-green-50;
 }
 
 .category-pre-application {
@@ -36,4 +37,15 @@ body {
 
 .category-in-spain {
   @apply bg-red-100 text-red-800;
+}
+
+/* Progress ring animation */
+@keyframes progress-ring-fill {
+  100% {
+    stroke-dasharray: 100 100;
+  }
+}
+
+.progress-ring-circle {
+  animation: progress-ring-fill 1s ease-out forwards;
 }
