@@ -1,24 +1,39 @@
-# Create a file named Dockerfile
-FROM node:18-alpine
+FROM node:18
 
 WORKDIR /app
 
-# Copy package.json files first for better caching
+# Copy only package.json files first for better caching
 COPY package*.json ./
-COPY server/package*.json ./server/
 COPY client/package*.json ./client/
+COPY server/package*.json ./server/
 
-# Install dependencies
-RUN npm install
+# Copy prisma schema first - this is crucial
+COPY prisma/ ./prisma/
 
-# Copy the rest of the application
+# Install OpenSSL (for Prisma)
+RUN apt-get update && apt-get install -y openssl
+
+# Install dependencies without running Prisma generate yet
+RUN npm install --ignore-scripts
+
+# Now copy everything else
 COPY . .
 
-# Build the client
-RUN npm run build
+# Generate Prisma client
+RUN npx prisma generate
 
-# Expose the port your app will run on
+# Build the client
+RUN cd client && npm install && npm run build
+
+# Install server dependencies
+RUN cd server && npm install
+
+# Expose port
 EXPOSE 3001
 
-# Start the application
-CMD npm start
+# Create a startup script that will run migrations and start the server
+RUN echo '#!/bin/bash\nnpx prisma migrate deploy\nnode server/index.js' > /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Run the startup script
+CMD ["/app/start.sh"]
