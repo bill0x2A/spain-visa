@@ -1,1 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.task-card {
+  @apply border border-gray-200 rounded-lg p-4 bg-white shadow-sm hover:shadow transition-shadow;
+}
+
+.task-completed {
+  @apply opacity-60;
+}
+
+.category-pre-application {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.category-documentation {
+  @apply bg-purple-100 text-purple-800;
+}
+
+.category-application {
+  @apply bg-amber-100 text-amber-800;
+}
+
+.category-processing {
+  @apply bg-green-100 text-green-800;
+}
+
+.category-travel {
+  @apply bg-indigo-100 text-indigo-800;
+}
+
+.category-in-spain {
+  @apply bg-red-100 text-red-800;
+}
